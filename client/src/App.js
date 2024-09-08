@@ -35,13 +35,9 @@ function App() {
     setLoading(true);
     setGift('');
     try {
-      const response = await axios.get('api endpoint', {
-        params: {
-          age,
-          person,
-          idea,
-        },
-      });
+      const response = await axios.post('/api/gift', { 
+        params: { age, person, idea } 
+    });    
       setGift(response.data.gift);
     } catch (error) {
       setGift('Oops, something went wrong! Try again.');
@@ -56,7 +52,9 @@ function App() {
           const { latitude, longitude } = position.coords;
           setLocationEnabled(true);
           try {
-            const response = await axios.get(`api end point`);
+            const response = await axios.get('/api/nearby-stores', {
+              params: { latitude, longitude }
+            });            
           } catch (error) {
             console.error('Error fetching nearby stores:', error);
             alert('Error fetching nearby stores. Please try again.');
@@ -100,7 +98,7 @@ function App() {
       </svg>
 
       <div className="gift-box">
-        <h1 className="title">🎁 Last-Minute Gift Generator 🎁</h1>
+        <h1 className="title">🎁 GiftSprint 🎁</h1>
 
         <div className="input-container">
           <input
