@@ -7,6 +7,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [sparkles, setSparkles] = useState([]);
+  const [age, setAge] = useState('');
+  const [person, setPerson] = useState('');
+  const [idea, setIdea] = useState('');
 
   // Generate sparkle positions dynamically
   useEffect(() => {
@@ -32,7 +35,13 @@ function App() {
     setLoading(true);
     setGift('');
     try {
-      const response = await axios.get('api endpoint');
+      const response = await axios.get('api endpoint', {
+        params: {
+          age,
+          person,
+          idea,
+        },
+      });
       setGift(response.data.gift);
     } catch (error) {
       setGift('Oops, something went wrong! Try again.');
@@ -93,8 +102,38 @@ function App() {
       <div className="gift-box">
         <h1 className="title">🎁 Last-Minute Gift Generator 🎁</h1>
 
+        <div className="input-container">
+          <input
+            type="number"
+            placeholder="Age"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Person (e.g. little brother)"
+            value={person}
+            onChange={(e) => setPerson(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Idea (e.g. toy games)"
+            value={idea}
+            onChange={(e) => setIdea(e.target.value)}
+          />
+        </div>
+
         <button className="generate-button" onClick={handleGenerateGift}>
-          Generate Gift Idea
+          {gift ? (
+            <>
+              <span role="img" aria-label="dice">
+                🎲
+              </span>{' '}
+              Reroll
+            </>
+          ) : (
+            'Generate Gift Idea'
+          )}
         </button>
 
         {loading && <div className="spinner"></div>}

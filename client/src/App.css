@@ -42,6 +42,37 @@
   z-index: 1;
 }
 
+/* Input Container for Form Inputs */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Themed Input Fields */
+.input-container input {
+  padding: 10px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  border: 2px solid #ffd700; /* Golden border to match the theme */
+  max-width: 300px;
+  width: 100%;
+  background-color: #fffacd; /* Light yellow background for festive theme */
+  color: #b22222;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  font-family: 'Raleway', sans-serif;
+  text-align: center; /* Centered text */
+}
+
+.input-container input:focus {
+  outline: none;
+  border-color: #ffdb58; /* Slightly brighter yellow on focus */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 /* SVG Sparkle Animation */
 svg.sparkles {
   position: absolute;
@@ -98,6 +129,10 @@ svg.sparkles {
 
 /* Buttons */
 .generate-button, .location-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   padding: 15px 40px;
   font-size: 1.3rem;
   border: none;
@@ -105,7 +140,7 @@ svg.sparkles {
   cursor: pointer;
   background: linear-gradient(145deg, #ffd700, #ffdb58);
   color: #b22222;
-  margin: 10px 0;
+  margin: 10px auto; /* Center the button */
   transition: all 0.4s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   font-family: 'Raleway', sans-serif;
@@ -115,6 +150,10 @@ svg.sparkles {
 .generate-button:hover, .location-button:hover {
   transform: scale(1.1);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.generate-button span {
+  font-size: 1.5rem;
 }
 
 /* Gift idea display */
