@@ -100,7 +100,7 @@ function App() {
       </svg>
 
       <div className="gift-box">
-        <h1 className="title">🎁 Last-Minute Gift Generator 🎁</h1>
+        <h1 className="title">🎁 GiftSprint 🎁</h1>
 
         <div className="input-container">
           <input
