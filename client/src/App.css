@@ -1,38 +1,146 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.gift-background {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(45deg, #b22222, #821502);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+/* Keyframes for background gradient shift */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Central gift box */
+.gift-box {
+  width: 90%;
+  max-width: 450px;
+  padding: 50px;
+  background-color: #228b22;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border: 5px solid #ffd700;
+  z-index: 1;
+}
+
+/* SVG Sparkle Animation */
+svg.sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    opacity: 0.2;
   }
+}
+
+.sparkles circle {
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+/* Festive bow/ribbon effect */
+.gift-box::before, .gift-box::after {
+  content: '';
+  position: absolute;
+  background-color: #ffd700;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.gift-box::after {
+  left: 50%;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background-color: #ffd700;
+  transform: translateX(-50%);
+}
+
+/* Title */
+.title {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 25px;
+  text-shadow: 2px 2px 4px #000;
+}
+
+/* Buttons */
+.generate-button, .location-button {
+  padding: 15px 40px;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: linear-gradient(145deg, #ffd700, #ffdb58);
+  color: #b22222;
+  margin: 10px 0;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+}
+
+.generate-button:hover, .location-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Gift idea display */
+.gift-display {
+  margin-top: 30px;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Location enabled message */
+.location-enabled {
+  margin-top: 20px;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+/* Spinner */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
