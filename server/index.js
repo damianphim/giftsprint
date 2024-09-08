@@ -10,10 +10,9 @@ app.get('/', (req, res) => {
 });
 
 const giftRoutes = require('./routes/gift');
-const mapsRoutes = require('./routes/maps');
+
 
 app.use('/api', giftRoutes); // Route for gift-related endpoints
-app.use('/api', mapsRoutes); // Route for map-related endpoints
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`); // Start the server
