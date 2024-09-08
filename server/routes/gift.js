@@ -1,5 +1,5 @@
 const express = require('express');
-const { OpenAI } = require('openai');
+const { OpenAI } = require('openai'); // Updated import
 const router = express.Router();
 const { Client } = require('@googlemaps/google-maps-services-js');
 
@@ -18,8 +18,8 @@ const fetchNearbyStores = async (latitude, longitude) => {
                 location: `${latitude},${longitude}`,
                 radius: 5000, // 5 km radius
                 type: 'store',
-                key: GOOGLE_MAPS_API_KEY
-            }
+                key: GOOGLE_MAPS_API_KEY,
+            },
         });
         return response.data.results;
     } catch (error) {
@@ -30,31 +30,38 @@ const fetchNearbyStores = async (latitude, longitude) => {
 
 // Generate gift idea based on nearby stores
 router.post('/gift', async (req, res) => {
-    const { budget, recipient, location, ideas } = req.body; // Added location and ideas
+    const { age, person, budget, ideas, location } = req.body;
 
     try {
-        // Fetch nearby stores if location is provided
         let storeNames = [];
-        if (location) {
-            const { latitude, longitude } = location;
-            const stores = await fetchNearbyStores(latitude, longitude);
+        if (location && location.latitude && location.longitude) {
+            const stores = await fetchNearbyStores(location.latitude, location.longitude);
             storeNames = stores.map(store => store.name).join(', ');
         }
 
-        const prompt = ideas 
-            ? `Generate a fun, last-minute gift for a ${recipient} with a budget of $${budget}. The nearby stores include: ${storeNames}. Here are some ideas: ${ideas}.`
-            : `Generate a fun, last-minute gift for a ${recipient} with a budget of $${budget}. The nearby stores include: ${storeNames}.`;
+        const userMessage = ideas
+            ? `Generate a fun, last-minute gift for a ${person} who is ${age} years old with a budget of $${budget}. Make it 1 idea in 1 sentence. The nearby stores include: ${storeNames || 'no nearby stores'}. Here are some ideas: ${ideas}.`
+            : `Generate a fun, last-minute gift for a ${person} who is ${age} years old with a budget of $${budget}. Make it 1 idea in 1 sentence. The nearby stores include: ${storeNames || 'no nearby stores'}.`;
 
-        
-
-        const response = await openai.completions.create({
-            model: 'gpt-3.5-turbo', // Updated model
-            prompt: prompt,
-            max_tokens: 100
+        const response = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [
+                { role: 'system', content: 'You are a helpful assistant.' },
+                { role: 'user', content: userMessage }
+            ],
+            max_tokens: 150
         });
 
-        const giftIdea = response.data.choices[0].text.trim();
-        res.json({ giftIdea });
+        // Log the entire response to understand its structure
+        console.log('Full API Response:', response);
+
+        // Check if response contains choices
+        if (response.choices && response.choices.length > 0) {
+            const giftIdea = response.choices[0].message.content.trim();
+            res.json({ giftIdea });
+        } else {
+            throw new Error('No choices found in the response.');
+        }
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: error.message });

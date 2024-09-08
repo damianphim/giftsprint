@@ -6,9 +6,11 @@ function App() {
   const [gift, setGift] = useState('');
   const [loading, setLoading] = useState(false);
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const [location, setLocation] = useState(null);
   const [sparkles, setSparkles] = useState([]);
   const [age, setAge] = useState('');
   const [person, setPerson] = useState('');
+  const [Budget, setBudget] = useState('');
   const [idea, setIdea] = useState('');
 
   // Generate sparkle positions dynamically
@@ -35,19 +37,22 @@ function App() {
     setLoading(true);
     setGift('');
     try {
-      const response = await axios.get('api endpoint', {
-        params: {
-          age,
-          person,
-          idea,
-        },
-      });
-      setGift(response.data.gift);
+        const response = await axios.post('http://localhost:5000/api/gift', {
+            age,
+            person,
+            budget: Budget, // Ensure the parameter name matches what the backend expects
+            idea,
+            location: locationEnabled ? location : {}
+        });
+        // Ensure the response data is accessed correctly
+        setGift(response.data.giftIdea || 'No gift idea found.');
     } catch (error) {
-      setGift('Oops, something went wrong! Try again.');
+        console.error('Error:', error); // Log the error to the console for debugging
+        setGift('Oops, something went wrong! Try again.');
     }
     setLoading(false);
-  };
+};
+
 
   const enableLocation = async () => {
     if (navigator.geolocation) {
@@ -55,13 +60,19 @@ function App() {
         async (position) => {
           const { latitude, longitude } = position.coords;
           setLocationEnabled(true);
-          try {
-            const response = await axios.get(`api end point`);
-          } catch (error) {
+          setLocation({ latitude, longitude});
+        },
+          /*try {
+            /*const response = await axios.get(`http://localhost:5000/stores`,{
+              params: {latitude, longitude},
+            });
+          } 
+          catch (error) {
             console.error('Error fetching nearby stores:', error);
             alert('Error fetching nearby stores. Please try again.');
           }
-        },
+        },*/
+        
         (error) => {
           switch (error.code) {
             case error.PERMISSION_DENIED:
@@ -114,6 +125,12 @@ function App() {
             placeholder="Person (e.g. little brother)"
             value={person}
             onChange={(e) => setPerson(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Budget "
+            value={Budget}
+            onChange={(e) => setBudget(e.target.value)}
           />
           <input
             type="text"
