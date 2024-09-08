@@ -26,9 +26,10 @@
 
 /* Central gift box */
 .gift-box {
+  width: auto;
   width: 90%;
   max-width: 450px;
-  padding: 50px;
+  padding: 40px;
   background-color: #228b22;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -36,6 +37,8 @@
   position: relative;
   overflow: hidden;
   border: 5px solid #ffd700;
+  min-height: 200px;
+  overflow-y: auto;
   z-index: 1;
 }
 
@@ -87,7 +90,7 @@ svg.sparkles {
 
 /* Title */
 .title {
-  font-size: 2.5rem;
+  font-size: 1.6rem;
   color: #fff;
   margin-bottom: 25px;
   text-shadow: 2px 2px 4px #000;
